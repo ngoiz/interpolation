@@ -3,6 +3,7 @@ import os
 import interpolation.__main__ as interpolation_main
 import interpolation.grid as grid
 import shutil
+import interpolation.interface as interface
 
 
 class TestGrid(unittest.TestCase):
@@ -77,14 +78,19 @@ class TestGrid(unittest.TestCase):
             if case_info not in members:
                 raise IndexError(f'Case was not properly added to list. Case {case_info} not in {members}')
 
-        with self.subTest('Loading library with desired points'):
-            grid_settings['points'] = [{'alpha': 5, 'u_inf': 80},
-                                       {'alpha': 3, 'u_inf': 10}]
+        with self.subTest('Loading library with desired points from yaml'):
+            points_input = [{'alpha': 5, 'u_inf': 80},
+                            {'alpha': 3, 'u_inf': 10}]
+
+            yaml_file = test_directory + '/input_database_points.yaml'
+
+            interface.dict_list_to_yaml(points_input, yaml_file)
+            grid_settings['points'] = yaml_file
 
             gr3 = grid.Database(grid_settings)
             gr3.load(sim_info, source_cases_path, sharpy_simulation_settings['output_folder'])
             members = gr3.library.entries()
-            for case_info in grid_settings['points']:
+            for case_info in points_input:
                 if case_info not in members:
                     raise IndexError(f'Case was not properly added to list. Case {case_info} not in {members}')
 

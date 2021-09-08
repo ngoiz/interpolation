@@ -176,5 +176,17 @@ def array_to_yaml(parameters, data_grid, output_file):
         data_list.append({param_name: float(data_grid[i_point, param_index])
                           for param_index, param_name in enumerate(parameters)})
 
+    dict_list_to_yaml(data_list, output_file)
+
+
+def dict_list_to_yaml(parameters, output_file):
+    """
+    Write a list of dictionaries to yaml file
+
+    Args:
+        parameters (list(dict)): List of dictionaries with key (param_name): value pairs
+        output_file (str): output yaml file
+
+    """
     with open(output_file, 'w') as f:  # creates or appends to file - might be a good flag option for the user to set
-        f.write(yaml.safe_dump(data_list))
+        f.write(yaml.safe_dump(parameters))

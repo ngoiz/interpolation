@@ -65,10 +65,17 @@ class Database(Grid):
 
         # add extra points if needed - from points setting
         try:
-            points = self.settings['points']
+            points_input = self.settings['points']
         except KeyError:
             pass
         else:
+            if type(points_input) is str:
+                points = interface.yaml_to_array(points_input)
+            elif type(points_input) is list:
+                points = points_input
+            else:
+                raise TypeError(f'`points` settings is neither path to yaml nor list. It is type {type(points_input)}')
+
             if siminfo is not None:
                 for point in points:
                     self.add_point(point, siminfo, *source_cases_path)

@@ -2,6 +2,7 @@ import unittest
 import interpolation.__main__ as interpolation_main
 import os
 import shutil
+import interpolation.suite as suite
 
 
 class TestBasic(unittest.TestCase):
@@ -31,14 +32,15 @@ class TestBasic(unittest.TestCase):
              'library_path': sim_directory,
              'library_name': 'testing_library'}
 
-        interpolation_main.main(input_settings)
+        # interpolation_main.main(settings=input_settings)
+        sim_info = interpolation_main.SimulationInfo(input_settings['simulation_name'],
+                                                     input_settings['directory'],
+                                                     input_settings)
+        interpolation_suite = suite.Suite()
+        interpolation_suite.create(sim_info)
 
         with self.subTest('Directory creation'):
             assert os.path.isdir(sim_directory)
-
-        with self.subTest('Log file exists'):
-            expected_log_directory = sim_directory + '/' + input_settings['simulation_name'] + '.log'
-            assert os.path.exists(expected_log_directory), 'Unable to find log at {:s}'.format(expected_log_directory)
 
         subdirectory_names = ['training_cases', 'training_output', 'testing_output', 'testing_cases']
         for directory_name in subdirectory_names:
@@ -79,3 +81,7 @@ class TestBasic(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         shutil.rmtree(cls.output_directory)
+
+
+if __name__ == '__main__':
+    unittest.main()

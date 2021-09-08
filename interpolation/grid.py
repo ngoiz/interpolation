@@ -57,13 +57,13 @@ class Database(Grid):
         self.library = pmorlibrary.ROMLibrary()
 
         self.path_to_library = library_settings['folder'] + '/' + library_settings['library_name'] + '.pkl'
+        self.library.parameters = [p_info['name'] for p_info in siminfo.parameters.values()]
         if os.path.exists(self.path_to_library):
             self.library.load_library(library_settings['folder'] + '/' + library_settings['library_name'] + '.pkl')
             self.library.folder = library_settings['folder']
             self.library.library_name = library_settings['library_name']
         else:
             self.library.create(library_settings)
-            self.library.parameters = [p_info['name'] for p_info in siminfo.parameters.values()]
             self.library.save_library()
 
         # add extra points if needed - from points setting

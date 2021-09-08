@@ -61,12 +61,18 @@ class TestInterpolationSuite(unittest.TestCase):
                           'training_data': training_grid_settings,
                           }
 
-        interpolation_main.main(input_settings)
+        interpolation_main.main(settings=input_settings)
 
-    # @classmethod
-    # def tearDownClass(cls):
-    #     for direc in cls.test_directories:
-    #         shutil.rmtree(direc)
+        with self.subTest('Log file exists'):
+            expected_log_directory = input_settings['directory'] + '/' + \
+                    input_settings['simulation_name'] + '/' \
+                    + input_settings['simulation_name'] + '.log'
+            assert os.path.exists(expected_log_directory), 'Unable to find log at {:s}'.format(expected_log_directory)
+
+    @classmethod
+    def tearDownClass(cls):
+        for direc in cls.test_directories:
+            shutil.rmtree(direc)
 
 
 if __name__ == '__main__':

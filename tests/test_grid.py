@@ -53,19 +53,19 @@ class TestGrid(unittest.TestCase):
         gr = grid.Database(grid_settings)
 
         with self.subTest('Create library'):
-            gr.load()  # the library does not exist so it has to be created
+            gr.load(siminfo=sim_info)  # the library does not exist so it has to be created
             assert os.path.exists(grid_settings['library_path'] + '/' +
                                   grid_settings['library_name'] + '.pkl'), 'Pickle file was not generated correctly'
 
         with self.subTest('Loading library'):
             """Loads the recently created library into another Database instance"""
             gr2 = grid.Database(grid_settings)
-            gr2.load()
+            gr2.load(sim_info)
 
         with self.subTest('Add existing point via list'):
             point = [2, 10]
             gr2.add_point(point, sim_info, source_cases_path)
-            members = gr2.library.entries()
+            members = gr2.library.entries
 
             case_info = {'alpha': point[0], 'u_inf': point[1]}
             if case_info not in members:
@@ -74,7 +74,7 @@ class TestGrid(unittest.TestCase):
         with self.subTest('Add non existent point via dict'):
             case_info = {'alpha': 3, 'u_inf': 20}
             gr2.add_point(case_info, sim_info, source_cases_path, sharpy_simulation_settings['output_folder'])
-            members = gr2.library.entries()
+            members = gr2.library.entries
             if case_info not in members:
                 raise IndexError(f'Case was not properly added to list. Case {case_info} not in {members}')
 
@@ -89,7 +89,7 @@ class TestGrid(unittest.TestCase):
 
             gr3 = grid.Database(grid_settings)
             gr3.load(sim_info, source_cases_path, sharpy_simulation_settings['output_folder'])
-            members = gr3.library.entries()
+            members = gr3.library.entries
             for case_info in points_input:
                 if case_info not in members:
                     raise IndexError(f'Case was not properly added to list. Case {case_info} not in {members}')

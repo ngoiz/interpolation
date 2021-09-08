@@ -78,7 +78,13 @@ class Suite:
     def _create_grid(self, grid_settings):
         if grid_settings['type'].lower() == 'database':
             database = grid.Database(settings=grid_settings)
+
+            try:
+                sim_output_folder = self.simulation_info.settings['simulation_settings']['output_folder']
+            except KeyError:
+                sim_output_folder = None
+
             database.load(self.simulation_info,
                           grid_settings.get('source_cases_path', None),
-                          self.simulation_info.settings['simulation_settings']['output_folder'])
+                          sim_output_folder)
             return database

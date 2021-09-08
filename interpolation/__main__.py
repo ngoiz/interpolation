@@ -24,7 +24,7 @@ def parse_inputs():
     return parser
 
 
-def main(settings=None):
+def main(*args, settings=None):
     if settings is None:
         parser = parse_inputs()
 

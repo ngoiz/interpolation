@@ -1,0 +1,487 @@
+--------------------------------------------------------------------------------
+            ######  ##     ##    ###    ########  ########  ##    ##
+           ##    ## ##     ##   ## ##   ##     ## ##     ##  ##  ##
+           ##       ##     ##  ##   ##  ##     ## ##     ##   ####
+            ######  ######### ##     ## ########  ########     ##
+                 ## ##     ## ######### ##   ##   ##           ##
+           ##    ## ##     ## ##     ## ##    ##  ##           ##
+            ######  ##     ## ##     ## ##     ## ##           ##
+--------------------------------------------------------------------------------
+Aeroelastics Lab, Aeronautics Department.
+    Copyright (c), Imperial College London.
+    All rights reserved.
+    License available at https://github.com/imperialcollegelondon/sharpy
+Running SHARPy from /home/ng213/2TB/pazy_code/pazy-sharpy/lib/interpolation
+SHARPy being run is in /home/ng213/2TB/pazy_code/pazy-sharpy/lib/sharpy
+The branch being run is dev_sep_interpolation
+The version and commit hash are: v1.2.1-550-gde28aff-de28aff
+SHARPy output folder set
+	//home/ng213/2TB/pazy_code/pazy-sharpy/lib/interpolation/tests/src/output//pazy_uinf0100_alpha0500/
+Generating an instance of BeamLoader
+Generating an instance of AerogridLoader
+Variable control_surface_deflection has no assigned value in the settings file.
+    will default to the value: []
+Variable control_surface_deflection_generator_settings has no assigned value in the settings file.
+    will default to the value: {}
+Variable dx1 has no assigned value in the settings file.
+    will default to the value: -1.0
+Variable ndx1 has no assigned value in the settings file.
+    will default to the value: 1
+Variable r has no assigned value in the settings file.
+    will default to the value: 1.0
+Variable dxmax has no assigned value in the settings file.
+    will default to the value: -1.0
+The aerodynamic grid contains 2 surfaces
+  Surface 0, M=4, N=30
+     Wake 0, M=20, N=30
+  Surface 1, M=4, N=30
+     Wake 1, M=20, N=30
+  In total: 240 bound panels
+  In total: 1200 wake panels
+  Total number of panels = 1440
+Generating an instance of Modal
+Variable print_info has no assigned value in the settings file.
+    will default to the value: True
+Variable dt has no assigned value in the settings file.
+    will default to the value: 0.0
+Variable delta_curved has no assigned value in the settings file.
+    will default to the value: 0.01
+Variable plot_eigenvalues has no assigned value in the settings file.
+    will default to the value: False
+Variable max_rotation_deg has no assigned value in the settings file.
+    will default to the value: 15.0
+Variable max_displacement has no assigned value in the settings file.
+    will default to the value: 0.15
+Variable use_custom_timestep has no assigned value in the settings file.
+    will default to the value: -1
+Variable rigid_modes_ppal_axes has no assigned value in the settings file.
+    will default to the value: False
+Structural eigenvalues
+
+
+
+|==============|==============|==============|==============|==============|==============|==============|
+|     mode     |  eval_real   |  eval_imag   | freq_n (Hz)  | freq_d (Hz)  |   damping    |  period (s)  |
+|==============|==============|==============|==============|==============|==============|==============|
+|      0       |   0.000000   |  26.620332   |   4.236757   |   4.236757   |  -0.000000   |   0.236030   |
+|      1       |   0.000000   |  26.620332   |   4.236757   |   4.236757   |  -0.000000   |   0.236030   |
+|      2       |   0.000000   |  182.525904  |  29.049900   |  29.049900   |  -0.000000   |   0.034424   |
+|      3       |   0.000000   |  182.525904  |  29.049900   |  29.049900   |  -0.000000   |   0.034424   |
+|      4       |   0.000000   |  263.572504  |  41.948867   |  41.948867   |  -0.000000   |   0.023839   |
+|      5       |   0.000000   |  263.572504  |  41.948867   |  41.948867   |  -0.000000   |   0.023839   |
+|      6       |   0.000000   |  528.054443  |  84.042475   |  84.042475   |  -0.000000   |   0.011899   |
+|      7       |   0.000000   |  528.054443  |  84.042475   |  84.042475   |  -0.000000   |   0.011899   |
+|      8       |   0.000000   |  668.298180  |  106.362959  |  106.362959  |  -0.000000   |   0.009402   |
+|      9       |   0.000000   |  668.298180  |  106.362959  |  106.362959  |  -0.000000   |   0.009402   |
+|      10      |   0.000000   | 1018.251691  |  162.059790  |  162.059790  |  -0.000000   |   0.006171   |
+|      11      |   0.000000   | 1018.251691  |  162.059790  |  162.059790  |  -0.000000   |   0.006171   |
+|      12      |   0.000000   | 1046.214951  |  166.510281  |  166.510281  |  -0.000000   |   0.006006   |
+|      13      |   0.000000   | 1046.214951  |  166.510281  |  166.510281  |  -0.000000   |   0.006006   |
+|      14      |   0.000000   | 1723.127585  |  274.244273  |  274.244273  |  -0.000000   |   0.003646   |
+|      15      |   0.000000   | 1723.127585  |  274.244273  |  274.244273  |  -0.000000   |   0.003646   |
+|      16      |   0.000000   | 1872.881320  |  298.078320  |  298.078320  |  -0.000000   |   0.003355   |
+|      17      |   0.000000   | 1872.881320  |  298.078320  |  298.078320  |  -0.000000   |   0.003355   |
+|      18      |   0.000000   | 2548.191780  |  405.557318  |  405.557318  |  -0.000000   |   0.002466   |
+|      19      |   0.000000   | 2548.191780  |  405.557318  |  405.557318  |  -0.000000   |   0.002466   |
+Generating an instance of StaticCoupled
+Variable correct_forces_method has no assigned value in the settings file.
+    will default to the value: 
+Generating an instance of NonLinearStatic
+Variable newmark_damp has no assigned value in the settings file.
+    will default to the value: 0.0001
+Variable relaxation_factor has no assigned value in the settings file.
+    will default to the value: 0.3
+Variable dt has no assigned value in the settings file.
+    will default to the value: 0.01
+Variable num_steps has no assigned value in the settings file.
+    will default to the value: 500
+Variable initial_position has no assigned value in the settings file.
+    will default to the value: [0. 0. 0.]
+Generating an instance of StaticUvlm
+Variable iterative_solver has no assigned value in the settings file.
+    will default to the value: False
+Variable iterative_tol has no assigned value in the settings file.
+    will default to the value: 0.0001
+Variable iterative_precond has no assigned value in the settings file.
+    will default to the value: False
+Variable cfl1 has no assigned value in the settings file.
+    will default to the value: True
+Variable vortex_radius_wake_ind has no assigned value in the settings file.
+    will default to the value: 1e-06
+Variable rbm_vel_g has no assigned value in the settings file.
+    will default to the value: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+
+
+|=====|=====|============|==========|==========|==========|==========|==========|==========|
+|iter |step | log10(res) |    Fx    |    Fy    |    Fz    |    Mx    |    My    |    Mz    |
+|=====|=====|============|==========|==========|==========|==========|==========|==========|
+|  0  |  0  |  0.00000   |  0.1012  | -0.0000  | -1.0347  | -0.0000  |  0.0155  |  0.0000  |
+|  1  |  0  |  -8.33025  |  0.1010  | -0.0000  | -1.0337  | -0.0000  |  0.0155  | -0.0000  |
+|  0  |  1  |  0.00000   |  0.2022  |  0.0000  | -2.0674  |  0.0000  |  0.0306  |  0.0000  |
+|  1  |  1  |  -7.81712  |  0.2019  |  0.0000  | -2.0657  | -0.0000  |  0.0306  | -0.0000  |
+|  0  |  2  |  0.00000   |  0.3032  |  0.0000  | -3.0986  |  0.0000  |  0.0454  |  0.0000  |
+|  1  |  2  |  -7.44261  |  0.3028  |  0.0000  | -3.0961  | -0.0000  |  0.0455  | -0.0000  |
+|  0  |  3  |  0.00000   |  0.4040  |  0.0000  | -4.1283  |  0.0000  |  0.0600  |  0.0000  |
+|  1  |  3  |  -7.20976  |  0.4036  |  0.0000  | -4.1250  | -0.0000  |  0.0600  | -0.0000  |
+Generating an instance of AerogridPlot
+Variable include_forward_motion has no assigned value in the settings file.
+    will default to the value: False
+Variable include_unsteady_applied_forces has no assigned value in the settings file.
+    will default to the value: False
+Variable name_prefix has no assigned value in the settings file.
+    will default to the value: 
+Variable u_inf has no assigned value in the settings file.
+    will default to the value: 0.0
+Variable dt has no assigned value in the settings file.
+    will default to the value: 0.0
+Variable include_velocities has no assigned value in the settings file.
+    will default to the value: False
+Variable include_incidence_angle has no assigned value in the settings file.
+    will default to the value: False
+Variable num_cores has no assigned value in the settings file.
+    will default to the value: 1
+Variable vortex_radius has no assigned value in the settings file.
+    will default to the value: 1e-06
+...Finished
+Generating an instance of BeamPlot
+Variable include_FoR has no assigned value in the settings file.
+    will default to the value: False
+Variable include_applied_moments has no assigned value in the settings file.
+    will default to the value: True
+Variable name_prefix has no assigned value in the settings file.
+    will default to the value: 
+Variable output_rbm has no assigned value in the settings file.
+    will default to the value: True
+...Finished
+Generating an instance of WriteVariablesTime
+Variable delimiter has no assigned value in the settings file.
+    will default to the value:  
+Variable FoR_variables has no assigned value in the settings file.
+    will default to the value: ['']
+Variable FoR_number has no assigned value in the settings file.
+    will default to the value: [0]
+Variable aero_panels_variables has no assigned value in the settings file.
+    will default to the value: ['']
+Variable aero_panels_isurf has no assigned value in the settings file.
+    will default to the value: [0]
+Variable aero_panels_im has no assigned value in the settings file.
+    will default to the value: [0]
+Variable aero_panels_in has no assigned value in the settings file.
+    will default to the value: [0]
+Variable aero_nodes_variables has no assigned value in the settings file.
+    will default to the value: ['']
+Variable aero_nodes_isurf has no assigned value in the settings file.
+    will default to the value: [0]
+Variable aero_nodes_im has no assigned value in the settings file.
+    will default to the value: [0]
+Variable aero_nodes_in has no assigned value in the settings file.
+    will default to the value: [0]
+Variable cleanup_old_solution has no assigned value in the settings file.
+    will default to the value: False
+Variable vel_field_variables has no assigned value in the settings file.
+    will default to the value: []
+Variable vel_field_points has no assigned value in the settings file.
+    will default to the value: [0. 0. 0.]
+Generating an instance of Modal
+Structural eigenvalues
+
+
+
+|==============|==============|==============|==============|==============|==============|==============|
+|     mode     |  eval_real   |  eval_imag   | freq_n (Hz)  | freq_d (Hz)  |   damping    |  period (s)  |
+|==============|==============|==============|==============|==============|==============|==============|
+|      0       |   0.000000   |  26.638255   |   4.239610   |   4.239610   |  -0.000000   |   0.235871   |
+|      1       |   0.000000   |  26.638352   |   4.239625   |   4.239625   |  -0.000000   |   0.235870   |
+|      2       |   0.000000   |  182.513055  |  29.047855   |  29.047855   |  -0.000000   |   0.034426   |
+|      3       |   0.000000   |  182.513205  |  29.047879   |  29.047879   |  -0.000000   |   0.034426   |
+|      4       |   0.000000   |  262.653433  |  41.802592   |  41.802592   |  -0.000000   |   0.023922   |
+|      5       |   0.000000   |  262.654345  |  41.802737   |  41.802737   |  -0.000000   |   0.023922   |
+|      6       |   0.000000   |  527.971047  |  84.029202   |  84.029202   |  -0.000000   |   0.011901   |
+|      7       |   0.000000   |  527.971163  |  84.029220   |  84.029220   |  -0.000000   |   0.011901   |
+|      8       |   0.000000   |  649.252574  |  103.331757  |  103.331757  |  -0.000000   |   0.009678   |
+|      9       |   0.000000   |  649.252932  |  103.331813  |  103.331813  |  -0.000000   |   0.009678   |
+|      10      |   0.000000   | 1040.694625  |  165.631694  |  165.631694  |  -0.000000   |   0.006037   |
+|      11      |   0.000000   | 1040.695057  |  165.631762  |  165.631762  |  -0.000000   |   0.006037   |
+|      12      |   0.000000   | 1049.881991  |  167.093909  |  167.093909  |  -0.000000   |   0.005985   |
+|      13      |   0.000000   | 1049.882852  |  167.094046  |  167.094046  |  -0.000000   |   0.005985   |
+|      14      |   0.000000   | 1723.033745  |  274.229338  |  274.229338  |  -0.000000   |   0.003647   |
+|      15      |   0.000000   | 1723.033764  |  274.229341  |  274.229341  |  -0.000000   |   0.003647   |
+|      16      |   0.000000   | 1882.368029  |  299.588177  |  299.588177  |  -0.000000   |   0.003338   |
+|      17      |   0.000000   | 1882.368415  |  299.588238  |  299.588238  |  -0.000000   |   0.003338   |
+|      18      |   0.000000   | 2548.048193  |  405.534465  |  405.534465  |  -0.000000   |   0.002466   |
+|      19      |   0.000000   | 2548.048352  |  405.534491  |  405.534491  |  -0.000000   |   0.002466   |
+Generating an instance of LinearAssembler
+Variable linearisation_tstep has no assigned value in the settings file.
+    will default to the value: -1
+Variable modal_tstep has no assigned value in the settings file.
+    will default to the value: -1
+Variable retain_inputs has no assigned value in the settings file.
+    will default to the value: []
+Variable retain_outputs has no assigned value in the settings file.
+    will default to the value: []
+Variable retain_input_variables has no assigned value in the settings file.
+    will default to the value: []
+Variable retain_output_variables has no assigned value in the settings file.
+    will default to the value: []
+Variable recover_accelerations has no assigned value in the settings file.
+    will default to the value: False
+Generating an instance of LinearAeroelastic
+Variable uvlm_filename has no assigned value in the settings file.
+    will default to the value: 
+Variable track_body has no assigned value in the settings file.
+    will default to the value: True
+Variable use_euler has no assigned value in the settings file.
+    will default to the value: False
+Warning - Unrecognised setting: rigid_body_motion. Please check input file and/or documentation.
+Generating an instance of LinearUVLM
+Variable ScalingDict has no assigned value in the settings file.
+    will default to the value: {}
+Variable gust_assembler has no assigned value in the settings file.
+    will default to the value: 
+Variable gust_assembler_inputs has no assigned value in the settings file.
+    will default to the value: {}
+Variable cfl1 has no assigned value in the settings file.
+    will default to the value: True
+Variable convert_to_ct has no assigned value in the settings file.
+    will default to the value: False
+Warning - Unrecognised setting: rigid_body_motion. Please check input file and/or documentation.
+Warning - Unrecognised setting: use_euler. Please check input file and/or documentation.
+Variable length has no assigned value in the settings file.
+    will default to the value: 1.0
+Variable speed has no assigned value in the settings file.
+    will default to the value: 1.0
+Variable density has no assigned value in the settings file.
+    will default to the value: 1.0
+Variable velocity_field_generator has no assigned value in the settings file.
+    will default to the value: SteadyVelocityField
+Variable velocity_field_input has no assigned value in the settings file.
+    will default to the value: {}
+Variable physical_model has no assigned value in the settings file.
+    will default to the value: True
+Variable track_body has no assigned value in the settings file.
+    will default to the value: False
+Variable track_body_number has no assigned value in the settings file.
+    will default to the value: -1
+Warning - Unrecognised setting: rigid_body_motion. Please check input file and/or documentation.
+Warning - Unrecognised setting: use_euler. Please check input file and/or documentation.
+Warning - Unrecognised setting: remove_inputs. Please check input file and/or documentation.
+Warning - Unrecognised setting: rom_method. Please check input file and/or documentation.
+Warning - Unrecognised setting: gust_assembler. Please check input file and/or documentation.
+Warning - Unrecognised setting: convert_to_ct. Please check input file and/or documentation.
+Warning - Unrecognised setting: rom_method_settings. Please check input file and/or documentation.
+Warning - Unrecognised setting: gust_assembler_inputs. Please check input file and/or documentation.
+Initialising Static linear UVLM solver class...
+			...done in 0.42 sec
+Generating an instance of Krylov
+Variable print_info has no assigned value in the settings file.
+    will default to the value: True
+Variable tangent_input_file has no assigned value in the settings file.
+    will default to the value: 
+Variable restart_arnoldi has no assigned value in the settings file.
+    will default to the value: False
+Initialising Krylov Model Order Reduction
+State-space realisation of UVLM equations started...
+Computing wake propagation matrix with CFL1=True
+	state-space model produced in form:
+	x_{n+1} = A x_{n} + Bp u_{n+1}
+			...done in 3.10 sec
+Generating an instance of LinearBeam
+Variable remove_rigid_states has no assigned value in the settings file.
+    will default to the value: False
+Model Order Reduction in progress...
+Moment Matching Krylov Model Reduction
+	Construction Algorithm:
+		mimo_rational_arnoldi
+	Interpolation points:
+		sigma = 0.000000 [rad/s]
+
+	Krylov order:
+		r = 6
+	Constructing observability space
+ROM is stable
+	DT Eigenvalues:
+		mu = 0.870612 + -0.000000j
+		mu = 0.818602 + -0.000000j
+		mu = 0.788347 + 0.000000j
+		mu = 0.709086 + -0.329672j
+		mu = 0.709086 + 0.329672j
+		mu = 0.721749 + 0.225632j
+		mu = 0.721749 + -0.225632j
+		mu = 0.671485 + -0.211737j
+		mu = 0.671485 + 0.211737j
+		mu = 0.700347 + 0.000000j
+		mu = 0.669077 + -0.164390j
+		mu = 0.669077 + 0.164390j
+		mu = 0.621530 + -0.000000j
+		mu = 0.585869 + 0.000000j
+		mu = 0.572737 + -0.067639j
+		mu = 0.572737 + 0.067639j
+		mu = 0.496470 + -0.000000j
+		mu = 0.446455 + -0.000000j
+		mu = 0.358351 + 0.019646j
+		mu = 0.358351 + -0.019646j
+		mu = 0.280676 + 0.021428j
+		mu = 0.280676 + -0.021428j
+		mu = 0.213490 + 0.005503j
+		mu = 0.213490 + -0.005503j
+		mu = -0.105011 + -0.000000j
+		mu = 0.054115 + 0.088171j
+		mu = 0.054115 + -0.088171j
+		mu = 0.039637 + 0.069447j
+		mu = 0.039637 + -0.069447j
+		mu = -0.079523 + -0.000000j
+		mu = -0.064166 + -0.000000j
+		mu = 0.030737 + -0.055648j
+		mu = 0.030737 + 0.055648j
+		mu = -0.055793 + -0.000000j
+		mu = 0.026648 + 0.043659j
+		mu = 0.026648 + -0.043659j
+		mu = 0.039140 + -0.015128j
+		mu = 0.039140 + 0.015128j
+		mu = -0.007218 + 0.035477j
+		mu = -0.007218 + -0.035477j
+		mu = -0.027756 + -0.020451j
+		mu = -0.027756 + 0.020451j
+		mu = -0.022692 + 0.000000j
+		mu = 0.011201 + -0.016631j
+		mu = 0.011201 + 0.016631j
+		mu = 0.007645 + 0.000000j
+		mu = -0.003818 + -0.005989j
+		mu = -0.003818 + 0.005989j
+
+System reduced from order 1920 to 
+	n = 48 states
+...Completed Model Order Reduction in 1.11 s
+Aeroelastic system assembled:
+	Aerodynamic states: 48
+	Structural states: 16
+	Total states: 64
+	Inputs: 26
+	Outputs: 24
+Final system is:
+State-space object
+States: 64
+Inputs: 26
+Outputs: 24
+dt: 0.0025
+Input Variables:
+	(InputVariable: q, size: 8, index: 0, starting at: 0, finishing at: 8)
+	(InputVariable: q_dot, size: 8, index: 1, starting at: 8, finishing at: 16)
+        (InputVariable: control_surface_deflection, size: 1, index: 2, starting
+at: 16, finishing at: 17)
+        (InputVariable: dot_control_surface_deflection, size: 1, index: 3,
+starting at: 17, finishing at: 18)
+	(InputVariable: Q, size: 8, index: 4, starting at: 18, finishing at: 26)
+State Variables:
+	(StateVariable: krylov, size: 48, index: 0, starting at: 0, finishing at: 48)
+	(StateVariable: q, size: 8, index: 1, starting at: 48, finishing at: 56)
+	(StateVariable: q_dot, size: 8, index: 2, starting at: 56, finishing at: 64)
+Output Variables:
+	(OutputVariable: Q, size: 8, index: 0, starting at: 0, finishing at: 8)
+	(OutputVariable: q, size: 8, index: 1, starting at: 8, finishing at: 16)
+	(OutputVariable: q_dot, size: 8, index: 2, starting at: 16, finishing at: 24)
+
+Generating an instance of AsymptoticStability
+Variable reference_velocity has no assigned value in the settings file.
+    will default to the value: 1.0
+Variable frequency_cutoff has no assigned value in the settings file.
+    will default to the value: 0.0
+Variable display_root_locus has no assigned value in the settings file.
+    will default to the value: False
+Variable velocity_analysis has no assigned value in the settings file.
+    will default to the value: []
+Variable target_system has no assigned value in the settings file.
+    will default to the value: ['aeroelastic']
+Variable num_evals has no assigned value in the settings file.
+    will default to the value: 200
+Warning - Unrecognised setting: folder. Please check input file and/or documentation.
+Dynamical System Eigenvalues
+Calculating aeroelastic eigenvalues using direct method
+	Saved results to //home/ng213/2TB/pazy_code/pazy-sharpy/lib/interpolation/tests/src/output//pazy_uinf0100_alpha0500//stability/
+Dynamical System Eigenvalues
+
+
+
+|==============|==============|==============|==============|==============|==============|==============|
+|     mode     |  eval_real   |  eval_imag   | freq_n (Hz)  | freq_d (Hz)  |   damping    |  period (s)  |
+|==============|==============|==============|==============|==============|==============|==============|
+|      0       |   0.127761   |  910.131338  |  144.851903  |  144.851901  |  -0.000140   |   0.006904   |
+|      1       |   0.127761   | -910.131338  |  144.851903  |  144.851901  |  -0.000140   |   0.006904   |
+|      2       |  -0.089602   | -545.423553  |  86.806856   |  86.806854   |   0.000164   |   0.011520   |
+|      3       |  -0.089602   |  545.423553  |  86.806856   |  86.806854   |   0.000164   |   0.011520   |
+|      4       |  -1.003869   |  252.886304  |  40.248422   |  40.248105   |   0.003970   |   0.024846   |
+|      5       |  -1.003869   | -252.886304  |  40.248422   |  40.248105   |   0.003970   |   0.024846   |
+|      6       |  -1.140736   |  26.710661   |   4.255009   |   4.251134   |   0.042668   |   0.235231   |
+|      7       |  -1.140736   |  -26.710661  |   4.255009   |   4.251134   |   0.042668   |   0.235231   |
+|      8       |  -1.224129   |  734.221900  |  116.855207  |  116.855045  |   0.001667   |   0.008558   |
+|      9       |  -1.224129   | -734.221900  |  116.855207  |  116.855045  |   0.001667   |   0.008558   |
+|      10      |  -1.235072   |  737.583424  |  117.390212  |  117.390048  |   0.001674   |   0.008519   |
+|      11      |  -1.235072   | -737.583424  |  117.390212  |  117.390048  |   0.001674   |   0.008519   |
+|      12      |  -1.431084   | -179.149237  |  28.513396   |  28.512487   |   0.007988   |   0.035072   |
+|      13      |  -1.431084   |  179.149237  |  28.513396   |  28.512487   |   0.007988   |   0.035072   |
+|      14      |  -2.856440   | -466.905365  |  74.311687   |  74.310297   |   0.006118   |   0.013457   |
+|      15      |  -2.856440   |  466.905365  |  74.311687   |  74.310297   |   0.006118   |   0.013457   |
+|      16      |  -54.740985  |   0.000000   |   8.712298   |   0.000000   |   1.000000   |     inf      |
+|      17      |  -80.063023  |   0.000000   |  12.742426   |   0.000000   |   1.000000   |     inf      |
+|      18      |  -94.691040  |  -0.000000   |  15.070547   |   0.000000   |   1.000000   |     inf      |
+|      19      |  -98.440067  |  173.971217  |  31.813648   |  27.688379   |   0.492469   |   0.036116   |
+|      20      |  -98.440067  | -173.971217  |  31.813648   |  27.688379   |   0.492469   |   0.036116   |
+|      21      | -111.762623  |  121.294713  |  26.250094   |  19.304653   |   0.677619   |   0.051801   |
+|      22      | -111.762623  | -121.294713  |  26.250094   |  19.304653   |   0.677619   |   0.051801   |
+|      23      | -140.306713  | -122.287285  |  29.621704   |  19.462626   |   0.753856   |   0.051381   |
+|      24      | -140.306713  |  122.287285  |  29.621704   |  19.462626   |   0.753856   |   0.051381   |
+|      25      | -142.332766  |  -0.000000   |  22.652963   |   0.000000   |   1.000000   |     inf      |
+|      26      | -149.032610  |  96.383180   |  28.247396   |  15.339860   |   0.839698   |   0.065190   |
+|      27      | -149.032610  |  -96.383180  |  28.247396   |  15.339860   |   0.839698   |   0.065190   |
+|      28      | -190.200055  |  -0.000000   |  30.271279   |   0.000000   |   1.000000   |     inf      |
+|      29      | -213.809726  |  -0.000000   |  34.028875   |   0.000000   |   1.000000   |     inf      |
+|      30      | -220.021298  |  47.139161   |  35.812151   |   7.502431   |   0.977810   |   0.133290   |
+|      31      | -220.021298  |  -47.139161  |  35.812151   |   7.502431   |   0.977810   |   0.133290   |
+|      32      | -279.975376  |  -0.000000   |  44.559465   |   0.000000   |   1.000000   |     inf      |
+|      33      | -322.302678  |  -0.000000   |  51.296064   |   0.000000   |   1.000000   |     inf      |
+|      34      | -409.669073  |  20.590688   |  65.283163   |   3.277110   |   0.998739   |   0.305147   |
+|      35      | -409.669073  |  -20.590688  |  65.283163   |   3.277110   |   0.998739   |   0.305147   |
+|      36      | -500.710054  |  27.144421   |  79.807496   |   4.320169   |   0.998534   |   0.231472   |
+|      37      | -500.710054  |  -27.144421  |  79.807496   |   4.320169   |   0.998534   |   0.231472   |
+|      38      | -611.967140  |  20.234259   |  97.450821   |   3.220382   |   0.999454   |   0.310522   |
+|      39      | -611.967140  |  -20.234259  |  97.450821   |   3.220382   |   0.999454   |   0.310522   |
+|      40      | -734.725455  | -796.756797  |  172.493629  |  126.807783  |   0.677910   |   0.007886   |
+|      41      | -734.725455  |  796.756797  |  172.493629  |  126.807783  |   0.677910   |   0.007886   |
+|      42      | -784.181136  | -791.832435  |  177.365932  |  126.024046  |   0.703666   |   0.007935   |
+|      43      | -784.181136  |  791.832435  |  177.365932  |  126.024046  |   0.703666   |   0.007935   |
+|      44      | -836.208011  |   0.000000   |  133.086638  |   0.000000   |   1.000000   |     inf      |
+|      45      | -874.821994  |  786.548311  |  187.233582  |  125.183052  |   0.743629   |   0.007988   |
+|      46      | -874.821994  | -786.548311  |  187.233582  |  125.183052  |   0.743629   |   0.007988   |
+|      47      | -884.383375  |  -0.000000   |  140.753986  |   0.000000   |   1.000000   |     inf      |
+|      48      | -903.230777  |  770.480925  |  188.950280  |  122.625848  |   0.760801   |   0.008155   |
+|      49      | -903.230777  | -770.480925  |  188.950280  |  122.625848  |   0.760801   |   0.008155   |
+|      50      | -943.868597  | -429.114746  |  165.017460  |  68.295733   |   0.910336   |   0.014642   |
+|      51      | -943.868597  |  429.114746  |  165.017460  |  68.295733   |   0.910336   |   0.014642   |
+|      52      | -965.425914  | 1256.637061  |  252.208309  |  200.000000  |   0.609228   |   0.005000   |
+|      53      | -973.523497  |   0.000000   |  154.941077  |   0.000000   |   1.000000   |     inf      |
+|      54      | -1024.717072 |  769.900368  |  203.991173  |  122.533449  |   0.799489   |   0.008161   |
+|      55      | -1024.717072 | -769.900368  |  203.991173  |  122.533449  |   0.799489   |   0.008161   |
+|      56      | -1093.299449 |  -21.952421  |  174.039084  |   3.493836   |   0.999798   |   0.286218   |
+|      57      | -1093.299449 |  21.952421   |  174.039084  |   3.493836   |   0.999798   |   0.286218   |
+|      58      | -1249.296400 |  801.885267  |  236.266651  |  127.624004  |   0.841556   |   0.007836   |
+|      59      | -1249.296400 | -801.885267  |  236.266651  |  127.624004  |   0.841556   |   0.007836   |
+|      60      | -1312.182433 |  555.682713  |  226.794734  |  88.439651   |   0.920834   |   0.011307   |
+|      61      | -1312.182433 | -555.682713  |  226.794734  |  88.439651   |   0.920834   |   0.011307   |
+|      62      | -1339.273468 |   0.000000   |  213.151993  |   0.000000   |   1.000000   |     inf      |
+|      63      | -1573.697919 | -1256.637061 |  320.516949  |  200.000000  |   0.781431   |   0.005000   |
+Generating an instance of FrequencyResponse
+Variable print_info has no assigned value in the settings file.
+    will default to the value: False
+Variable target_system has no assigned value in the settings file.
+    will default to the value: ['aeroelastic']
+Variable quick_plot has no assigned value in the settings file.
+    will default to the value: False
+	Computed the frequency response in 2.708475 s
+Generating an instance of SaveParametricCase
+Warning - Unrecognised setting: folder. Please check input file and/or documentation.
+	Writing parameter u_inf: 10
+	Writing parameter alpha: 5
+Generating an instance of PickleData
+FINISHED - Elapsed time = 11.4398376 seconds
+FINISHED - CPU process time = 42.6614996 seconds

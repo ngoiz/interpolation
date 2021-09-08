@@ -1,0 +1,6 @@
+[parameters]
+u_inf = 10
+alpha = 2
+[sim_info]
+case = pazy_uinf0100_alpha0200
+path_to_data = //home/ng213/2TB/pazy_code/pazy-sharpy/lib/interpolation/tests/src/output/pazy_uinf0100_alpha0200

@@ -1,0 +1,27 @@
+--------------------------------------------------------------------------------
+            ######  ##     ##    ###    ########  ########  ##    ##
+           ##    ## ##     ##   ## ##   ##     ## ##     ##  ##  ##
+           ##       ##     ##  ##   ##  ##     ## ##     ##   ####
+            ######  ######### ##     ## ########  ########     ##
+                 ## ##     ## ######### ##   ##   ##           ##
+           ##    ## ##     ## ##     ## ##    ##  ##           ##
+            ######  ##     ## ##     ## ##     ## ##           ##
+--------------------------------------------------------------------------------
+Aeroelastics Lab, Aeronautics Department.
+    Copyright (c), Imperial College London.
+    All rights reserved.
+    License available at https://github.com/imperialcollegelondon/sharpy
+Running SHARPy from /home/ng213/2TB/pazy_code/pazy-sharpy/lib/interpolation
+SHARPy being run is in /home/ng213/2TB/pazy_code/pazy-sharpy/lib/sharpy
+The branch being run is dev_sep_interpolation
+The version and commit hash are: v1.2.1-550-gde28aff-de28aff
+SHARPy output folder set
+	//home/ng213/2TB/pazy_code/pazy-sharpy/lib/interpolation/tests/src/output//pazy_uinf0100_alpha0200/
+Generating an instance of BeamLoader
+Generating an instance of SaveParametricCase
+Warning - Unrecognised setting: folder. Please check input file and/or documentation.
+	Writing parameter u_inf: 10
+	Writing parameter alpha: 2
+Generating an instance of PickleData
+FINISHED - Elapsed time = 0.1243276 seconds
+FINISHED - CPU process time = 0.4675686 seconds

@@ -119,11 +119,13 @@ class SimulationInfo:
 
 def interpolation_run():
     """
-    This is a wrapper function for the console command "sharpy"
+    This is a wrapper function for the console command ``interpolation``
     """
+
     with warnings.catch_warnings():
         warnings.simplefilter('ignore')
         main(sys.argv)
+
 
 if __name__ == '__main__':
     main()

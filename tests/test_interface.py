@@ -50,10 +50,10 @@ class TestInterface(unittest.TestCase):
 
         interpolation_cases_folder = test_directory + '/cases/'
         interpolation_output_folder = test_directory + '/output/'
-        source_cases_folder = test_directory + '/source_cases_folder/'
-        if not os.path.isdir(source_cases_folder):
-            os.makedirs(source_cases_folder)    # need to create this one to trick sharpy
-                                                # in believing there are source cases there
+        source_cases_folder = self.route_test_dir + '/src/output/'
+        # if not os.path.isdir(source_cases_folder):
+        #     os.makedirs(source_cases_folder)    # need to create this one to trick sharpy
+        #                                         # in believing there are source cases there
 
         simulation_settings = {'reference_case': 0,
                                'projection_method': 'weakMAC',
@@ -72,13 +72,12 @@ class TestInterface(unittest.TestCase):
         # empty library requesting an input - not yet sure how to handle
         with self.subTest('SHARPy PMOR'):
             # this test will fail within SHARPy because there are no source cases
-            # interface.run_sharpy_interpolation(case_name,
-            #                                    cases_folder=interpolation_cases_folder,
-            #                                    output_folder=interpolation_output_folder,
-            #                                    source_cases_folder=None,
-            #                                    input_file=input_points_yaml_file,
-            #                                    simulation_settings=simulation_settings)
-            pass
+            interface.run_sharpy_interpolation(case_name,
+                                               cases_folder=interpolation_cases_folder,
+                                               output_folder=interpolation_output_folder,
+                                               source_cases_folder=source_cases_folder,
+                                               input_file=input_points_yaml_file,
+                                               simulation_settings=simulation_settings)
 
     def test_siminfo_run_sharpy(self):
         test_directory = self.route_test_dir + '/test_siminfo_sharpy_interface/'
@@ -87,8 +86,10 @@ class TestInterface(unittest.TestCase):
         parameters = {'alpha': 2,
                       'u_inf': 10}
 
-        temp_cases = self.route_test_dir + '/src/cases/'  # change this to real directory!
-        temp_output = self.route_test_dir + '/src/output/'
+        # temp_cases = self.route_test_dir + '/src/cases/'  # change this to real directory!
+        # temp_output = self.route_test_dir + '/src/output/'
+        temp_cases = test_directory + '/cases/'  # change this to real directory!
+        temp_output = test_directory + '/output/'
         sharpy_simulation_settings = {
             'cases_subfolder': temp_cases,
             'output_folder': temp_output,
@@ -145,3 +146,7 @@ class TestInterface(unittest.TestCase):
 
         for direc in cls.test_directories:
             shutil.rmtree(direc)
+
+
+if __name__ == '__main__':
+    unittest.main()

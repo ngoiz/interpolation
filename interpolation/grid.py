@@ -35,15 +35,16 @@ class Database(Grid):
     def __init__(self, settings):
         super().__init__(settings)
 
-    def load(self):
+    def load(self, siminfo=None, *source_cases_path):
         """
         Creates or loads a pmor library pkl from the settings
             library_path and library_name
 
+        Args:
+            siminfo (interpolation.__main__.SimInfo (optional)): SimInfo object to run sharpy at missing data points
+            source_cases_path (str or list(str) (optional)): Locations where to look for cases
+
         """
-        # load from existing pkl
-        # create pkl
-        # source cases from a specific directory - in case new cases are needed
 
         library_pickle_folder = self.settings['library_path']
         library_pickle_name = self.settings['library_name']
@@ -63,24 +64,44 @@ class Database(Grid):
             self.library.save_library()
 
         # add extra points if needed - from points setting
+        try:
+            points = self.settings['points']
+        except KeyError:
+            pass
+        else:
+            if siminfo is not None:
+                for point in points:
+                    self.add_point(point, siminfo, *source_cases_path)
+            else:
+                self.logger.warning('Provide a SimInfo object to run sharpy at missing points')
 
-    def add_point(self, point_parameters, siminfo, source_cases_path):
-        # Add point to database:
-        # 1) input either a list or a dictionary? or just list?
-        # 2) try to load case, if it does not exist, run it
+    def add_point(self, point_parameters, siminfo, *source_cases_path):
+        """
 
-        if type(point_parameters) is dict:
-            raise NotImplementedError('Only lists or np.arrays for a single point')
+        Args:
+            point_parameters (list or np.array or dict): List or array containing the parameters of the desired point
+            siminfo (interpolation.__main__.SimInfo):
+            source_cases_path (str): Path(s) in which to find cases, separated by commas
 
+        Returns:
+
+        """
         self.logger.info(f'Adding new point to database. Point is {point_parameters}')
 
         target_case_name = siminfo.case_name_generator(point_parameters)
-        if sharpy_case_exists(source_cases_path, case_name=target_case_name):
-            self.library.load_case(source_cases_path + '/' + target_case_name)
-        else:
-            pass
-            # run it
-            # interface.run_sharpy()
+
+        case_exists = False
+        for path in source_cases_path:
+            if sharpy_case_exists(path, case_name=target_case_name):
+                case_exists = True
+                src_path = path
+                break
+        if not case_exists:
+            siminfo.run_sharpy(point_parameters)
+            src_path = siminfo.settings['simulation_settings']['output_folder']
+
+        self.library.load_case(src_path + '/' + target_case_name)
+        self.library.save_library()
 
     def __call__(self, *args):
         """

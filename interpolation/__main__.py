@@ -4,6 +4,8 @@ import interpolation.suite as suite
 import interpolation.interface as interface
 import sharpy.io.logger_utils as logger_utils
 import os
+import warnings
+import sys
 
 
 def parse_inputs():
@@ -113,6 +115,15 @@ class SimulationInfo:
         interface.run_sharpy(case_name=self.case_name_generator(parameter_values),
                              parameters=param_dict,
                              simulation_settings=self.settings['simulation_settings'])
+
+
+def interpolation_run():
+    """
+    This is a wrapper function for the console command "sharpy"
+    """
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore')
+        main(sys.argv)
 
 if __name__ == '__main__':
     main()

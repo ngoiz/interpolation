@@ -11,6 +11,7 @@ class Grid:
     def __init__(self, settings):
         self.library = None  # pmor.library
         self.settings = settings
+        self.path_to_library = None  # str: path to pickle containg pmor library
         self.source_case_directory = None  # str: directory from where to source other cases
 
         self.logger = logging.getLogger(__name__)
@@ -55,12 +56,14 @@ class Database(Grid):
 
         self.library = pmorlibrary.ROMLibrary()
 
-        if os.path.exists(library_settings['folder'] + '/' + library_settings['library_name'] + '.pkl'):
+        self.path_to_library = library_settings['folder'] + '/' + library_settings['library_name'] + '.pkl'
+        if os.path.exists(self.path_to_library):
             self.library.load_library(library_settings['folder'] + '/' + library_settings['library_name'] + '.pkl')
             self.library.folder = library_settings['folder']
             self.library.library_name = library_settings['library_name']
         else:
             self.library.create(library_settings)
+            self.library.parameters = [p_info['name'] for p_info in siminfo.parameters.values()]
             self.library.save_library()
 
         # add extra points if needed - from points setting

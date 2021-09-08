@@ -48,6 +48,7 @@ def main(settings=None):
 
     interpolation_suite = suite.Suite()
     interpolation_suite.create(siminfo)
+    interpolation_suite.interpolate()
 
     return 0
 
@@ -62,8 +63,8 @@ class SimulationInfo:
         if not os.path.isdir(self.path):
             os.makedirs(self.path)
 
-        self.parameters = dict()
-        self.parameter_index = dict()
+        self.parameters = dict()  # dict: id: {name: v_name, fmt_scaling: v_fmt_scaling}
+        self.parameter_index = dict()  # dict: name: id
         for ith, parameter_info in enumerate(self.settings['parameters']):
             self.parameters[ith] = parameter_info
             self.parameter_index[parameter_info['name']] = parameter_info.get('index', ith)

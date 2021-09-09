@@ -36,6 +36,8 @@ class Database(Grid):
     def __init__(self, settings):
         super().__init__(settings)
 
+        self.save_pickle = True
+
     def load(self, siminfo=None, *source_cases_path):
         """
         Creates or loads a pmor library pkl from the settings
@@ -64,7 +66,8 @@ class Database(Grid):
             self.library.library_name = library_settings['library_name']
         else:
             self.library.create(library_settings)
-            self.library.save_library()
+            if self.save_pickle:
+                self.library.save_library()
 
         # add extra points if needed - from points setting
         try:
@@ -111,7 +114,8 @@ class Database(Grid):
             src_path = siminfo.settings['simulation_settings']['output_folder']
 
         self.library.load_case(src_path + '/' + target_case_name)
-        self.library.save_library()
+        if self.save_pickle:
+            self.library.save_library()
 
     def __call__(self, *args):
         """

@@ -20,6 +20,8 @@ class Suite:
         self.training_data = None  # grid.Grid with training points
         self.testing_data = None   # grid.Grid with testing points
 
+        self.cost_function = None
+
     def create(self, siminfo):
         """
         Creates an interpolation suite.
@@ -59,6 +61,14 @@ class Suite:
 
         # write yaml file
         self.testing_data(interpolation_points_file)
+
+        self.run_interpolation(case_name=case_name,
+                               interpolation_case_folder=interpolation_case_folder,
+                               interpolation_output_folder=interpolation_output_folder,
+                               interpolation_points_file=interpolation_points_file)
+
+    def run_interpolation(self, case_name, interpolation_case_folder, interpolation_output_folder,
+                          interpolation_points_file):
         interface.run_sharpy_interpolation(
             case_name,
             interpolation_case_folder,
@@ -75,9 +85,19 @@ class Suite:
             if not os.path.isdir(self.simulation_info.path + '/' + direc):
                 os.makedirs(self.simulation_info.path + '/' + direc)
 
-    def _create_grid(self, grid_settings):
+    def _create_grid(self, grid_settings, save_pickle=True):
+        """
+
+        Args:
+            grid_settings:
+            save_pickle (bool): create a grid that saves a pickle or not
+
+        Returns:
+
+        """
         if grid_settings['type'].lower() == 'database':
             database = grid.Database(settings=grid_settings)
+            database.save_pickle = save_pickle
 
             try:
                 sim_output_folder = self.simulation_info.settings['simulation_settings']['output_folder']
@@ -88,3 +108,26 @@ class Suite:
                           grid_settings.get('source_cases_path', None),
                           sim_output_folder)
             return database
+
+    def interpolate_at_point(self, point_info, case_name, cases_folder, output_folder):
+        """Interpolate at single point to be used with optimisation"""
+
+        # create temporary testing grid that will not be saved and will only contain this one point
+        temp_testing_data = self._create_grid(self.simulation_info.settings['testing_data'], save_pickle=False)
+        temp_testing_data.add_point(point_info, self.simulation_info,
+                                    self.simulation_info.settings['testing_data']['source_cases_path'],
+                                    self.simulation_info.settings['simulation_settings']['output_folder'])
+
+        for direc in [cases_folder, output_folder]:
+            if not os.path.isdir(direc):
+                os.makedirs(direc)
+
+        input_file_name = cases_folder + '/input.yaml'
+        temp_testing_data(input_file_name)
+
+        self.run_interpolation(case_name, cases_folder, output_folder, input_file_name)
+
+        interpolation_info = {'testing_library': temp_testing_data,
+                              'interpolation_output_directory': output_folder}
+
+        return interpolation_info

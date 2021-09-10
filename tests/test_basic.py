@@ -3,6 +3,7 @@ import interpolation.__main__ as interpolation_main
 import os
 import shutil
 import interpolation.suite as suite
+import numpy as np
 
 
 class TestBasic(unittest.TestCase):
@@ -59,7 +60,8 @@ class TestBasic(unittest.TestCase):
                           'directory': self.output_directory,
                           'parameters': [
                               {'name': 'parameter1',
-                               'format_scaling': 10},
+                               'format_scaling': 10,
+                               'sigfig': 2},
                               {'name': 'parameter2',
                                'format_scaling': 1}],
                           'case_name_format': 'case_p1{:04g}_p2{:04g}'}
@@ -77,6 +79,12 @@ class TestBasic(unittest.TestCase):
 
             assert case_name == true_case_name, f'Case name not generated correctly:\n\t' \
                                                 f'{case_name} should read {true_case_name}'
+
+        with self.subTest('Testing sigfigs'):
+            point_info = [5.38394, 2]
+            out_dict = sim_info.parameter_sigfig(point_info)
+            assert np.abs(np.round(point_info[0], decimals=2) - out_dict['parameter1']) < 1e-6, \
+                f'Sigfig not being processed correctly. {out_dict["parameter1"]} is not to 2 decimals'
 
     @classmethod
     def tearDownClass(cls):

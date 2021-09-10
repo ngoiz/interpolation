@@ -6,6 +6,7 @@ import sharpy.io.logger_utils as logger_utils
 import os
 import warnings
 import sys
+import numpy as np
 
 
 def parse_inputs():
@@ -116,6 +117,39 @@ class SimulationInfo:
         interface.run_sharpy(case_name=self.case_name_generator(parameter_values),
                              parameters=param_dict,
                              simulation_settings=self.settings['simulation_settings'])
+
+    def parameter_sigfig(self, point_info):
+        """
+
+        Args:
+            point_info (list or dict): point information
+
+        Returns:
+            dict: Containing parameter name and value appropriate to the specified significant figures specified in
+                  the parameter setting ``sigfig``
+        """
+
+        out_dict = {}
+        print(point_info)
+        for param_idx, param_info in self.parameters.items():
+            if type(point_info) is dict:
+                point_val = point_info[param_info['name']]  #input is dict
+            else:
+                try:
+                    r, c = point_info.shape
+                except AttributeError:
+                    point_val = point_info[param_idx] # input is list
+                else:
+                    point_val = point_info[0, param_idx] # input is 2D array
+
+            try:
+                sigfig = param_info['sigfig']
+            except KeyError:
+                out_dict[param_info['name']] = point_val
+            else:
+                out_dict[param_info['name']] = np.round(point_val, decimals=sigfig)
+        print(out_dict)
+        return out_dict
 
 
 def interpolation_run():

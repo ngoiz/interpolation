@@ -11,7 +11,6 @@ class TestInterpolationSuite(unittest.TestCase):
 
     test_directories = []
 
-    @unittest.skip('testing process for other test')
     def test_interpolation_suite(self):
         test_directory = self.route_test_dir + '/test_interpolation_suite/'
         self.test_directories.append(test_directory)
@@ -41,7 +40,7 @@ class TestInterpolationSuite(unittest.TestCase):
             'N': 1,
             'Ms': 5,
             'inout_coordinates': 'modes',
-            'flow': ['BeamLoader', 'SaveParametricCase'],
+            # 'flow': ['BeamLoader', 'SaveParametricCase'],
         }
 
         interpolation_simulation_settings = {'reference_case': 0,
@@ -81,6 +80,8 @@ class TestInterpolationSuite(unittest.TestCase):
                                   'source_cases_path': self.route_test_dir + '/src/output/',
                                   'points': [[2, 10],
                                              [2, 80],
+                                             [3, 10],
+                                             [3, 80],
                                              [5, 10],
                                              [5, 80]]}
 
@@ -98,7 +99,7 @@ class TestInterpolationSuite(unittest.TestCase):
             'N': 1,
             'Ms': 5,
             'inout_coordinates': 'modes',
-            'flow': ['BeamLoader', 'SaveParametricCase'],
+            # 'flow': ['BeamLoader', 'SaveParametricCase'],
         }
 
         interpolation_simulation_settings = {'reference_case': 0,
@@ -126,11 +127,11 @@ class TestInterpolationSuite(unittest.TestCase):
 
         interpolation_suite = suite.Suite()
         interpolation_suite.create(siminfo)
+        interpolation_suite.initialise_cost_function('EigenvalueComparison')
 
-        interpolation_suite.interpolate_at_point({'alpha': 3, 'u_inf': 20},
-                                                 case_name='trial_interpolation',
-                                                 cases_folder=siminfo.directory + '/interpolation_cases/',
-                                                 output_folder=siminfo.directory + '/interpolation_output/')
+        point_info = {'alpha': 3, 'u_inf': 20}
+
+        interpolation_suite.evaluate(point_info)
 
     @classmethod
     def tearDownClass(cls):

@@ -2,6 +2,8 @@ import os
 import interpolation.grid as grid
 import logging
 import interpolation.interface as interface
+import interpolation.evaluation as evaluation
+import interpolation.costfunctions as costfunctions
 
 
 class Suite:
@@ -128,6 +130,52 @@ class Suite:
         self.run_interpolation(case_name, cases_folder, output_folder, input_file_name)
 
         interpolation_info = {'testing_library': temp_testing_data,
+                              'testing_output_directory':
+                                  self.simulation_info.settings['simulation_settings']['output_folder'],
                               'interpolation_output_directory': output_folder}
 
         return interpolation_info
+
+    def evaluate(self, point_info):
+        """
+        Evaluates the interpolation at the desired point against the actual system for the cost_function specified
+        in the settings ``cost_function_name`` and ``cost_function_settings``
+
+        Args:
+            point_info (list or dict):
+
+        Returns:
+            float: cost value
+        """
+
+        point_info = self.simulation_info.parameter_sigfig(point_info)
+
+        interpolation_case_folder = self.simulation_info.path + '/interpolation_cases/'
+        interpolation_output_folder = self.simulation_info.path + '/interpolation_output/'
+        for direc in [interpolation_case_folder, interpolation_output_folder]:
+            if not os.path.isdir(direc):
+                os.makedirs(direc)
+        interpolation_info = self.interpolate_at_point(point_info,
+                                                       case_name='evaluation',
+                                                       cases_folder=interpolation_case_folder,
+                                                       output_folder=interpolation_output_folder)
+
+        comparison = evaluation.Evaluation(interpolated_directory=interpolation_info['interpolation_output_directory']
+                                                                  + '/evaluation/',
+                                           testing_output_directory=interpolation_info['testing_output_directory'],
+                                           testing_library=interpolation_info['testing_library'])
+
+        t_case, i_case = comparison.find_cases(point_info)
+
+        # now feed these to desired cost function
+        cost = self.cost_function(t_case, i_case)
+
+        return cost
+
+    def initialise_cost_function(self, cost_function_name=None, cost_function_settings=None):
+
+        if cost_function_name is None:
+            cost_function_name = self.simulation_info.settings['cost_function_name']
+        self.cost_function = costfunctions.get_cost_function(cost_function_name)
+        self.cost_function.initialise(
+            settings=self.simulation_info.settings.get('cost_function_settings', cost_function_settings))

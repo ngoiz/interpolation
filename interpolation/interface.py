@@ -68,7 +68,7 @@ def run_sharpy_interpolation(case_name, cases_folder, output_folder, source_case
         'reference_case': simulation_settings.get('reference_case', 3),
         'interpolation_system': 'aeroelastic',
         'input_file': input_file,
-        'cleanup_previous_cases': 'off',
+        'cleanup_previous_cases': 'on',
         # 'projection_method': 'strongMAC',
         # 'independent_interpolation': 'on',
         'interpolation_settings': {
@@ -87,8 +87,7 @@ def run_sharpy_interpolation(case_name, cases_folder, output_folder, source_case
         },
         'interpolation_scheme': 'linear',
         # 'interpolation_degree': 1,
-        'postprocessors': ['AsymptoticStability', 'FrequencyResponse',
-                           'SaveStateSpace'],
+        'postprocessors': ['AsymptoticStability', 'FrequencyResponse'],
         'postprocessors_settings': {'AsymptoticStability': {'print_info': 'on',
                                                             'export_eigenvalues': 'on',
                                                             },

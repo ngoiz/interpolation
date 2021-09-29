@@ -8,14 +8,14 @@ import numpy as np
 
 class Evaluation:
 
-    def __init__(self, interpolated_directory, testing_output_directory, testing_library=None):
+    def __init__(self, interpolated_directory, testing_output_directory, testing_library=None, **kwargs):
 
         self.logger = logging.getLogger(__name__)
+        self.verbose = kwargs.get('verbose', False)
+        self.cost_function = None
 
         self.testing_data = self.load_testing_data(testing_output_directory, testing_library)
         self.interpolated_data = self.load_interpolated_data(interpolated_directory)
-
-        self.cost_function = None
 
     def load_testing_data(self, test_directory, testing_library=None):
 
@@ -27,7 +27,7 @@ class Evaluation:
         else:
             rom_library = None
 
-        testing_data.load_bulk_cases('bode', 'eigs', eigs_legacy=False, rom_library=rom_library)
+        testing_data.load_bulk_cases('bode', 'eigs', eigs_legacy=False, rom_library=rom_library, verbose=self.verbose)
 
         return testing_data
 
@@ -35,7 +35,7 @@ class Evaluation:
 
         interpolated_data = i_sets.Interpolated(interpolated_directory, '/*')
         interpolated_data.systems = ['aeroelastic']
-        interpolated_data.load_bulk_cases('bode', 'eigs')
+        interpolated_data.load_bulk_cases('bode', 'eigs', verbose=self.verbose)
 
         return interpolated_data
 
@@ -54,9 +54,14 @@ class Evaluation:
         self.cost_function = costfunctions.get_cost_function(cost_function_name)
         self.cost_function.initialise(settings=cost_function_settings)
 
-    def cost_report(self, output_directory):
+    def cost_report(self, output_directory=None, column_names=None):
         output = []
-        column_names = self.testing_data.aeroelastic(0).case_info.keys()
+        if column_names is None:
+            column_names = list(self.testing_data.aeroelastic(0).case_info.keys())
+        else:
+            for name in column_names:
+                if name not in self.testing_data.aeroelastic(0).case_info.keys():
+                    raise KeyError(f'input column_names {name} not found in case parameters')
         params = []
         for n_case, t_case in enumerate(self.testing_data.aeroelastic):
             i_case = self.interpolated_data.aeroelastic.find_param(t_case.case_info)
@@ -66,7 +71,8 @@ class Evaluation:
             params.append(np.array([t_case.case_info[name] for name in column_names]))
 
         out = np.column_stack((params, output))
-        np.savetxt(output_directory + '/cost_report.txt', out,
-                   header=str([name + '\t' for name in column_names] + ['cost']))
+        if output_directory is not None:
+            np.savetxt(output_directory + '/cost_report.txt', out,
+                       header=str.join('\t', column_names + ['cost']))
 
         return out

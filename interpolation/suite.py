@@ -4,6 +4,7 @@ import logging
 import interpolation.interface as interface
 import interpolation.evaluation as evaluation
 import interpolation.costfunctions as costfunctions
+import numpy as np
 
 
 class Suite:
@@ -106,16 +107,28 @@ class Suite:
             except KeyError:
                 sim_output_folder = None
 
+            # input_src_cases_path = grid_settings.get('source_cases_path', None)
+            # if type(input_src_cases_path) is list:
+            #     database.load(self.simulation_info,
+            #                   *input_src_cases_path,
+            #                   sim_output_folder)
+            # else:
             database.load(self.simulation_info,
                           grid_settings.get('source_cases_path', None),
                           sim_output_folder)
             return database
 
     def interpolate_at_point(self, point_info, case_name, cases_folder, output_folder):
-        """Interpolate at single point to be used with optimisation"""
+        """
+        Interpolate at single point to be used with optimisation
+
+        Args:
+            point_info (list or dict or np.array or list(dict) or list(list)): Multiple or single points
+        """
 
         # create temporary testing grid that will not be saved and will only contain this one point
         temp_testing_data = self._create_grid(self.simulation_info.settings['testing_data'], save_pickle=False)
+
         temp_testing_data.add_point(point_info, self.simulation_info,
                                     self.simulation_info.settings['testing_data']['source_cases_path'],
                                     self.simulation_info.settings['simulation_settings']['output_folder'])
@@ -148,8 +161,9 @@ class Suite:
             float: cost value
         """
 
-        point_info = self.simulation_info.parameter_sigfig(point_info)
-
+        # point_info = self.simulation_info.parameter_sigfig(point_info)
+        #
+        # self.logger.info(f'Evaluating point {point_info}')
         interpolation_case_folder = self.simulation_info.path + '/interpolation_cases/'
         interpolation_output_folder = self.simulation_info.path + '/interpolation_output/'
         for direc in [interpolation_case_folder, interpolation_output_folder]:
@@ -165,12 +179,22 @@ class Suite:
                                            testing_output_directory=interpolation_info['testing_output_directory'],
                                            testing_library=interpolation_info['testing_library'])
 
-        t_case, i_case = comparison.find_cases(point_info)
+        # t_case, i_case = comparison.find_cases(point_info)
+        #
+        # # now feed these to desired cost function
+        # cost = self.cost_function(t_case, i_case)
 
-        # now feed these to desired cost function
-        cost = self.cost_function(t_case, i_case)
+        # >>> NEW APPROACH
+        comparison.initialise_cost_function(self.simulation_info.settings['cost_function_name'],
+                                            self.simulation_info.settings.get('cost_function_settings', {}))
 
-        return cost
+        cost_out = comparison.cost_report()
+
+        cost = cost_out[:, 2]
+        if cost_out.shape[0] == 1:
+            return cost[0]
+        else:
+            return cost
 
     def initialise_cost_function(self, cost_function_name=None, cost_function_settings=None):
 

@@ -8,10 +8,10 @@ dict_of_damping_functions = {}
 def cost_function(arg):
     global dict_of_cost_functions
     try:
-        arg.cost_function_name
+        arg.name
     except AttributeError:
         raise AttributeError('Class defined as cost function has no given name')
-    dict_of_cost_functions[arg.cost_function_name] = arg
+    dict_of_cost_functions[arg.name] = arg
     return arg
 
 
@@ -39,9 +39,21 @@ class BaseCostFunction:
         return cost
 
 
+# @cost_function # do not load as cost_function just yet (wait for it to be finished)
+class RootLoadsComparison(BaseCostFunction):
+    pass
+    # placeholder
+    # assess whether to do the postprocessing step here or just make sure that the
+    # loaded ROMs are in the appropriate form
+    # if we do so here, we do any frequency response calculation here, NOTHING
+    # withing SHARPy
+    # THEN: assess the different optimal points based on these cost functions
+
+
+
 @cost_function
 class EigenvalueComparison(BaseCostFunction):
-    cost_function_name = 'EigenvalueComparison'
+    name = 'EigenvalueComparison'
 
     def __init__(self):
         super().__init__()
@@ -51,7 +63,7 @@ class EigenvalueComparison(BaseCostFunction):
     def initialise(self, settings=None):
         super().initialise(settings)
 
-        self.damping_penalty = get_damping_penalty(self.settings.get('damping_penalty_name', 'BaseDamping'),
+        self.damping_penalty = get_damping_penalty(self.settings.get('damping_penalty_name', 'ConstantDamping'),
                                                    self.settings.get('damping_penalty_settings', None))
 
         print('Set the damping penalty to ', self.damping_penalty.name)
@@ -84,8 +96,8 @@ class EigenvalueComparison(BaseCostFunction):
 
 
 @damping_penalty
-class BaseDampingPenalty:
-    name = 'BaseDamping'
+class ConstantDampingPenalty:
+    name = 'ConstantDamping'
 
     def __init__(self, settings=None):
         self.settings = dict()
@@ -98,18 +110,18 @@ class BaseDampingPenalty:
 
 
 @damping_penalty
-class GaussianPenalty(BaseDampingPenalty):
+class GaussianPenalty(ConstantDampingPenalty):
     name = 'GaussianPenalty'
 
     def __init__(self, settings=None):
         super().__init__(settings=settings)
 
         self.multiplying_factor = self.settings.get('multiplying_factor', 1)
-        self.std_deviation_factor = self.settings.get('std_deviation_factor', 0.03)
+        self.std_deviation_factor = self.settings.get('std_deviation_factor', 0.03)  # pct damping
 
     def __call__(self, damping):
 
-        return self.multiplying_factor * np.exp(-damping ** 2 / (2 * self.std_deviation_factor ** 2))
+        return -self.multiplying_factor * np.exp(-damping ** 2 / (2 * self.std_deviation_factor ** 2))
 
 
 def get_cost_function(cost_function_name):

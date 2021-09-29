@@ -7,6 +7,9 @@ import os
 import warnings
 import sys
 import numpy as np
+import interpolation.optimiser as optimiser
+import interpolation.adaptivelhs as adaptivelhs
+import yaml
 
 
 def parse_inputs():
@@ -47,18 +50,44 @@ def main(*args, settings=None):
     logging.info(f'Starting Suite - log file created at {log_file_name}')
     print(starting_msg)
 
-    interpolation_suite = suite.Suite()
-    interpolation_suite.create(siminfo)
-    interpolation_suite.interpolate()
+    flow = siminfo.settings['flow']
+
+    switcher = FlowSwitcher()
+    program_exec = switcher.switch(flow)
+    program_exec(siminfo)
 
     return 0
+
+
+class FlowSwitcher:
+    def switch(self, flow):
+        method = self.__getattribute__(flow)
+        return method
+
+    @staticmethod
+    def interpolation(siminfo):
+        interpolation_suite = suite.Suite()
+        interpolation_suite.create(siminfo)
+        interpolation_suite.interpolate()
+
+    @staticmethod
+    def optimisation(siminfo):
+        optimisation_suite = optimiser.Optimiser(siminfo)
+        optimisation_suite.initialise_interpolation_suite()
+        optimisation_suite.run()
+
+    @staticmethod
+    def adaptive(siminfo):
+        adaptive_suite = adaptivelhs.AdaptiveLatinSampling(siminfo)
+        adaptive_suite.initialise_interpolation_suite()
+        adaptive_suite.run()
 
 
 class SimulationInfo:
 
     def __init__(self, name, directory, settings):
         self.name = name  # str
-        self.directory = directory  # str
+        self.__directory = directory  # str
         self.settings = settings  # dict
 
         if not os.path.isdir(self.path):
@@ -72,9 +101,19 @@ class SimulationInfo:
 
         self.n_parameters = len(self.parameters)
 
+        self.save_settings_file()
+
+    @property
+    def parameter_names(self):
+        names = []
+        for idx in range(self.n_parameters):
+            names.append(self.parameters[idx]['name'])
+
+        return names
+
     @property
     def path(self):
-        return os.path.abspath(self.directory + '/' + self.name + '/')
+        return os.path.abspath(self.__directory + '/' + self.name + '/')
 
     def case_name_generator(self, parameter_values):
         """
@@ -122,7 +161,7 @@ class SimulationInfo:
         """
 
         Args:
-            point_info (list or dict): point information
+            point_info (list or dict or np.array): point information
 
         Returns:
             dict: Containing parameter name and value appropriate to the specified significant figures specified in
@@ -130,7 +169,6 @@ class SimulationInfo:
         """
 
         out_dict = {}
-        print(point_info)
         for param_idx, param_info in self.parameters.items():
             if type(point_info) is dict:
                 point_val = point_info[param_info['name']]  #input is dict
@@ -138,7 +176,9 @@ class SimulationInfo:
                 try:
                     r, c = point_info.shape
                 except AttributeError:
-                    point_val = point_info[param_idx] # input is list
+                    point_val = point_info[param_idx]  # input is list
+                except ValueError:
+                    point_val = point_info[param_idx]  # input is a (1,) array where it is not able to unpack into r, c
                 else:
                     point_val = point_info[0, param_idx] # input is 2D array
 
@@ -148,8 +188,12 @@ class SimulationInfo:
                 out_dict[param_info['name']] = point_val
             else:
                 out_dict[param_info['name']] = np.round(point_val, decimals=sigfig)
-        print(out_dict)
         return out_dict
+
+    def save_settings_file(self):
+        new_name = self.path + '/input_' + self.name + '.yaml'
+        with open(new_name, 'w') as f:
+            f.write(yaml.dump(self.settings))
 
 
 def interpolation_run():

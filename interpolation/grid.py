@@ -89,11 +89,18 @@ class Database(Grid):
                 self.logger.warning('Provide a SimInfo object to run sharpy at missing points')
 
     def add_point(self, point_parameters, siminfo, *source_cases_path):
+
+        point_info_list = sort_point_input(point_parameters)
+
+        for point_info in point_info_list:
+            self.add_individual_point(point_info, siminfo, *source_cases_path)
+
+    def add_individual_point(self, point_parameters, siminfo, *source_cases_path):
         """
 
         Args:
             point_parameters (list or np.array or dict): List or array containing the parameters of the desired point
-            siminfo (interpolation.__main__.SimInfo):
+            siminfo (interpolation.__main__.SimulationInfo):
             source_cases_path (str): Path(s) in which to find cases, separated by commas
 
         Returns:
@@ -101,7 +108,27 @@ class Database(Grid):
         """
         self.logger.info(f'Adding new point to database. Point is {point_parameters}')
 
+        point_parameters = siminfo.parameter_sigfig(point_parameters)
+
         target_case_name = siminfo.case_name_generator(point_parameters)
+
+        if type(source_cases_path) is not list:
+            source_cases_path = list(source_cases_path)
+
+        try:
+            folder = siminfo.settings['simulation_settings']['output_folder']
+        except KeyError:
+            pass
+        else:
+            if folder not in source_cases_path:
+                source_cases_path.append(folder)
+
+        try:
+            source_cases_path.append(self.settings['source_cases_path'])
+        except KeyError:
+            pass
+
+        source_cases_path = flatten(source_cases_path)
 
         case_exists = False
         for path in source_cases_path:
@@ -150,3 +177,44 @@ def sharpy_case_exists(path, case_name):
     else:
         logging.info(f'Case {case_name} has been found at {path}')
         return True
+
+
+def flatten(S):
+    if S == []:
+        return S
+    if isinstance(S[0], list):
+        return flatten(S[0]) + flatten(S[1:])
+    return S[:1] + flatten(S[1:])
+
+
+def sort_point_input(point_parameters):
+    # sort out all possible input types...
+    if type(point_parameters) is list:
+        try:
+            point_parameters[0][0]
+        except TypeError:
+            # single point only; occurs if the entry is a float or int and cannot be accessed
+            point_info_list = [point_parameters]
+        except IndexError:
+            # single point only; occurs if the entry is a float or int and cannot be accessed
+            point_info_list = [point_parameters]
+        except KeyError:
+            # the first entry is then a dictionary, so its a list(dict) which is ok
+            point_info_list = point_parameters
+        else:
+            # input is list of lists and that is ok
+            point_info_list = point_parameters
+    elif type(point_parameters) is dict:
+        point_info_list = [point_parameters]
+    elif type(point_parameters) is np.ndarray:
+        shape = point_parameters.shape
+        if len(shape) > 1:
+            # for the case the input is a 2D array
+            point_info_list = [point_parameters[i_entry, :] for i_entry in range(shape[0])]
+        else:
+            point_info_list = [point_parameters]
+    else:
+        raise TypeError(f'Adding point. Cannot figure out what to do with input of type {type(point_parameters)}')
+
+    return point_info_list
+

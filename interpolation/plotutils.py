@@ -31,8 +31,8 @@ def plot_optimisation_data(optimisation_info, optimisation_id, opt=None):
                 facecolor=cmap(nrm(cost[n_source_points:])), edgecolor='k', lw=0.2)
     plt.colorbar(mpl.cm.ScalarMappable(nrm, cmap), label='Cost Function')
 
-    plt.text(param_values[n_source_points + 1, 0], param_values[n_source_points + 1, 1], '1')
-    plt.text(param_values[-1, 0], param_values[-1, 1], 'end')
+    # plt.text(param_values[n_source_points + 1, 0], param_values[n_source_points + 1, 1], '1')
+    # plt.text(param_values[-1, 0], param_values[-1, 1], 'end')
     plt.savefig(path_to_data + '/optimisation_path2d.pdf')
 
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d'))

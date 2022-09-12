@@ -4,6 +4,7 @@ import os
 import logging
 import interpolation.interface as interface
 import glob
+import pickle
 
 
 class Grid:
@@ -121,7 +122,8 @@ class Database(Grid):
             pass
         else:
             if folder not in source_cases_path:
-                source_cases_path.append(folder)
+                # source_cases_path.append(folder)
+                pass
 
         try:
             source_cases_path.append(self.settings['source_cases_path'])
@@ -130,15 +132,37 @@ class Database(Grid):
 
         source_cases_path = flatten(source_cases_path)
 
+        try:
+            folder = siminfo.settings['simulation_settings']['output_folder']
+        except KeyError:
+            pass
+        else:
+            if folder in source_cases_path:
+                source_cases_path.remove(folder)
+
         case_exists = False
         for path in source_cases_path:
             if sharpy_case_exists(path, case_name=target_case_name):
                 case_exists = True
                 src_path = path
+
+                # # see if it contains linear uvlm....
+                # pickle_path = path + target_case_name + '/' + target_case_name + '.pkl'
+                # with open(pickle_path, 'rb') as f:
+                #     try:
+                #         data = pickle.load(f)
+                #     except pickle.UnpicklingError:
+                #         siminfo.run_sharpy(point_parameters)
+                #         src_path = siminfo.settings['simulation_settings']['output_folder']
+                #     else:
+                #         if data.linear.linear_system.uvlm is None:
+                #             siminfo.run_sharpy(point_parameters)
+                #             src_path = siminfo.settings['simulation_settings']['output_folder']
+                #     del data
                 break
         if not case_exists:
             siminfo.run_sharpy(point_parameters)
-            src_path = siminfo.settings['simulation_settings']['output_folder']
+            src_path = siminfo.settings['simulation_settings']['output_folder'].replace('output', 'loads')
 
         self.library.load_case(src_path + '/' + target_case_name)
         if self.save_pickle:
@@ -172,7 +196,7 @@ def sharpy_case_exists(path, case_name):
         bool: True if exists, else False
     """
     if not os.path.isdir(path + '/' + case_name):
-        logging.info(f'Case {case_name} not found at {path}')
+        logging.debug(f'Case {case_name} not found at {path}')
         return False
     else:
         logging.info(f'Case {case_name} has been found at {path}')
@@ -189,7 +213,7 @@ def flatten(S):
 
 def sort_point_input(point_parameters):
     # sort out all possible input types...
-    if type(point_parameters) is list:
+    if type(point_parameters) is list or type(point_parameters) is tuple:
         try:
             point_parameters[0][0]
         except TypeError:

@@ -25,7 +25,7 @@ class Suite:
 
         self.cost_function = None
 
-    def create(self, siminfo):
+    def create(self, siminfo, **kwargs):
         """
         Creates an interpolation suite.
 
@@ -43,12 +43,16 @@ class Suite:
 
         self._create_directories()
 
+        save_pickle = kwargs.get('save_pickle', True)
+
         for ith, parameter_info in enumerate(self.simulation_info.settings['parameters']):
             self.parameters[ith] = parameter_info
             self.parameter_index[parameter_info['name']] = parameter_info.get('index', ith)
 
-        self.training_data = self._create_grid(self.simulation_info.settings['training_data'])
-        self.testing_data = self._create_grid(self.simulation_info.settings['testing_data'])
+        self.training_data = self._create_grid(kwargs.get('training_data_settings', self.simulation_info.settings['training_data']),
+                                               save_pickle=save_pickle)
+        self.testing_data = self._create_grid(kwargs.get('testing_data_settings', self.simulation_info.settings['testing_data']),
+                                              save_pickle=save_pickle)
 
     def interpolate(self):
         interpolation_case_folder = self.simulation_info.path + '/interpolation_cases/'

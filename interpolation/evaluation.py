@@ -27,7 +27,7 @@ class Evaluation:
         else:
             rom_library = None
 
-        testing_data.load_bulk_cases('bode', 'eigs', eigs_legacy=False, rom_library=rom_library, verbose=self.verbose)
+        testing_data.load_bulk_cases('eigs', 'bode', eigs_legacy=False, rom_library=rom_library, verbose=self.verbose)
 
         return testing_data
 

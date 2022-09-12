@@ -9,6 +9,7 @@ import sys
 import numpy as np
 import interpolation.optimiser as optimiser
 import interpolation.adaptivelhs as adaptivelhs
+import interpolation.sampling as sampling
 import yaml
 
 
@@ -81,6 +82,12 @@ class FlowSwitcher:
         adaptive_suite = adaptivelhs.AdaptiveLatinSampling(siminfo)
         adaptive_suite.initialise_interpolation_suite()
         adaptive_suite.run()
+
+    @staticmethod
+    def sampling(siminfo):
+        sampling_suite = sampling.BayesianSampling(siminfo)
+        sampling_suite.initialise()
+        sampling_suite.run()
 
 
 class SimulationInfo:
@@ -155,7 +162,10 @@ class SimulationInfo:
 
         interface.run_sharpy(case_name=self.case_name_generator(parameter_values),
                              parameters=param_dict,
-                             simulation_settings=self.settings['simulation_settings'])
+                             simulation_settings=self.settings['simulation_settings'],
+                             kwargs={'linear_loads_postprocessor': self.settings.get('linear_loads_postprocessor', False),
+                             'loads_postproc_folder': self.settings.get('loads_postproc_folder')})
+
 
     def parameter_sigfig(self, point_info):
         """

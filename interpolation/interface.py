@@ -18,7 +18,7 @@ import sharpy.sharpy_main
 
 
 # SHARPy interfaces
-def run_sharpy(case_name, parameters, simulation_settings):
+def run_sharpy(case_name, parameters, simulation_settings, kwargs):
     """
     The user needs to provide a path to a module that runs the desired SHARPy case
     this module needs to have a generate_pazy function
@@ -40,13 +40,29 @@ def run_sharpy(case_name, parameters, simulation_settings):
     sharpy_case_module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(sharpy_case_module)
 
-    kwargs = {**parameters, **simulation_settings}
+    simulation_kwargs = {**parameters, **simulation_settings}
 
     try:
         sharpy_case_module.generate_pazy(case_name,
-                                         **kwargs)
+                                         **simulation_kwargs)
     except AttributeError:
-        raise AttributeError('Ensure specified file contains the proper function name and signature')
+        raise AttributeError('Ensure sharpy generation specified file contains the proper function name and signature')
+
+    if kwargs.get('linear_loads_postprocessor', False):
+        print('Executing linear loads postprocessor')
+        postproc_py_file = '/home/ng213/2TB/pazy_code/pazy-sharpy/07_Interpolation/linear_loads.py'
+        spec = importlib.util.spec_from_file_location('postproc_loads', postproc_py_file)
+        postproc_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(postproc_module)
+
+        try:
+            path_to_pickle = simulation_settings['output_folder'] + '/' + case_name + '/' + case_name + '.pkl'
+            linear_loads_folder = simulation_settings['output_folder'].replace('output', 'loads')
+            print(f'Pickle file: {path_to_pickle}')
+            print(f'Linear loads output folder: {linear_loads_folder}')
+            postproc_module.run_postproc(linear_loads_folder, [path_to_pickle])
+        except AttributeError:
+            raise AttributeError('Ensure linear loads specified file contains the proper function name and signature')
 
 
 def run_sharpy_interpolation(case_name, cases_folder, output_folder, source_cases_folder, input_file,
@@ -59,7 +75,7 @@ def run_sharpy_interpolation(case_name, cases_folder, output_folder, source_case
     settings['SHARPy'] = {'case': case_name,
                           'route': cases_folder,
                           'flow': ['ParametricModelInterpolation'],
-                          'write_screen': 'on',
+                          'write_screen': 'off',
                           'write_log': 'on',
                           'log_folder': output_folder,
                           'log_file': case_name + '.log'}
@@ -87,7 +103,8 @@ def run_sharpy_interpolation(case_name, cases_folder, output_folder, source_case
         },
         'interpolation_scheme': 'linear',
         # 'interpolation_degree': 1,
-        'postprocessors': ['AsymptoticStability', 'FrequencyResponse'],
+        'postprocessors': ['AsymptoticStability', 'FrequencyResponse', 'SaveStateSpace'],
+        # 'postprocessors': ['AsymptoticStability'],
         'postprocessors_settings': {'AsymptoticStability': {'print_info': 'on',
                                                             'export_eigenvalues': 'on',
                                                             },

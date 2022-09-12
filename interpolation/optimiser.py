@@ -6,6 +6,7 @@ from interpolation.plotutils import plot_optimisation_data, plot_acquisition_fun
 from interpolation.grid import sort_point_input
 import pickle
 import numpy as np
+import shutil
 
 
 class Optimiser:
@@ -51,10 +52,10 @@ class Optimiser:
         self._new_optimisation()
         self.logger.info(f'Starting optimisation {self.optimisation_info.optimisation_id}')
 
-        prev_x, prev_y = self.generate_previous_xy()
+        # prev_x, prev_y = self.generate_previous_xy()
 
-        self.logger.info(f'Previous X {prev_x}')
-        self.logger.info(f'Previous Y {prev_y}')
+        # self.logger.info(f'Previous X {prev_x}')
+        # self.logger.info(f'Previous Y {prev_y}')
 
         opti = GPyOpt.methods.bayesian_optimization.BayesianOptimization(
             f=self.interpolation.evaluate,
@@ -67,14 +68,14 @@ class Optimiser:
             acquisition_type=self.settings.get('acquisition_type', 'EI_MCMC'),
             verbosity=True,
             maximize=False,
-            X=prev_x,
-            Y=prev_y,
+            # X=prev_x,
+            # Y=prev_y,
             model_update_interval=self.settings.get('model_update_interval', 1)
         )
 
         opti_id = self.optimisation_info.optimisation_id
         opti_path = self.optimisation_info.optimisation_data[opti_id]['output_directory']
-        np.savetxt(opti_path + '/priors_evaluations.txt', np.column_stack((prev_x, prev_y)))
+        # np.savetxt(opti_path + '/priors_evaluations.txt', np.column_stack((prev_x, prev_y)))
         opti.run_optimization(max_iter=self.settings.get('max_opti_iterations', 10),
                               verbosity=True,
                               report_file=opti_path + '/optimisation_report.txt',
@@ -112,6 +113,11 @@ class Optimiser:
         self.optimisation_info.optimisation_data[self.optimisation_info.optimisation_id] = \
             {'output_directory': output_directory}
 
+        # clear any interpolation output
+        interpolation_output_directory = self.sim_info.path + '/interpolation_output/'
+        if os.path.isdir(interpolation_output_directory):
+            shutil.rmtree(interpolation_output_directory)
+
     def add_to_training(self, new_point):
         self.interpolation.training_data.add_point(new_point, self.sim_info)
 
@@ -137,8 +143,12 @@ class Optimiser:
             prev_y_temp = cost
             prev_x = np.array(prev_x)
             prev_y = np.zeros((prev_x.shape[0], 1))
-            for i, entry in enumerate(prev_y_temp):
-                prev_y[i] = entry
+            try:
+                for i, entry in enumerate(prev_y_temp):
+                    prev_y[i] = entry
+            except TypeError:
+                # in case cost is a float and not an array
+                prev_y[0] = prev_y_temp
 
             x = np.concatenate((x_training, prev_x))
             y = np.concatenate((y_training, prev_y))

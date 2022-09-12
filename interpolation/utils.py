@@ -2,7 +2,7 @@ import numpy as np
 import sharpytools.linear.stability as stability
 
 
-def produce_root_locus(dataset, param, value):
+def produce_root_locus(dataset, param, value, **kwargs):
     list_of_constant_cases, params = retrieve_constant_parameter_cases(param, value, dataset.aeroelastic)
 
     eigs = []
@@ -25,7 +25,10 @@ def produce_root_locus(dataset, param, value):
     except AttributeError:
         u_inf_idx = dataset.param_name.index('u_inf')
 
-    return param_array[:, u_inf_idx], eigs
+    vels = param_array[:, u_inf_idx]
+
+    conditions = stability.filter_velocity_eigenvalues(vels, eigs, **kwargs)
+    return vels[conditions], eigs[conditions]
 
 
 def produce_vgf(dataset, param, value, **kwargs):
@@ -51,8 +54,13 @@ def produce_vgf(dataset, param, value, **kwargs):
         u_inf_idx = dataset.parameter_name.index('u_inf')
     except AttributeError:
         u_inf_idx = dataset.param_name.index('u_inf')
+
+    try:
+        kwargs['wdmax']
+    except KeyError:
+        kwargs['wdmax'] = 40 * 2 * np.pi
     vel, damp, fn = stability.modes(param_array[:, u_inf_idx],
-                                    eigs, use_hz=True, wdmax=50 * 2 * np.pi,
+                                    eigs, use_hz=True,
                                     **kwargs)
 
     return vel, damp, fn
@@ -62,8 +70,10 @@ def compute_flutter(dataset, param, value, instability_damping=0., vel_vmin=0., 
 
     v, damp, _ = produce_vgf(dataset, param, value, **kwargs)
 
-    return stability.find_flutter_speed2(v, damp, instability_damping, vel_vmin)
-    # return stability.find_flutter_speed(v, damp, instability_damping, vel_vmin)
+    if kwargs.get('alternative_flutter_function', False):
+        return stability.find_flutter_speed(v, damp, instability_damping, vel_vmin)
+    else:
+        return stability.find_flutter_speed2(v, damp, instability_damping, vel_vmin)
 
 
 def retrieve_constant_parameter_cases(param, value, dataset):
